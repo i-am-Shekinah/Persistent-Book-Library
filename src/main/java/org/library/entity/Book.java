@@ -22,7 +22,7 @@ public class Book {
 
     public Book() {}
 
-    public Book(Long id, String title, String author) {
+    public Book(String title, String author) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -53,8 +53,8 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", title=" + title +
-                ", author=" + author +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
                 ", available=" + isAvailable +
                 "}";
     }

@@ -36,4 +36,21 @@ public class BorrowRecordRepository {
             return session.createQuery("from BorrowRecord", BorrowRecord.class).list();
         }
     }
+
+    public void delete(Long id) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            BorrowRecord record = session.get(BorrowRecord.class, id);
+            if (record != null) {
+                session.remove(record);
+            }
+            transaction.commit();
+            logger.info("Borrow record deleted: {}", id);
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            logger.error("Error deleting borrow record", e);
+        }
+    }
+
 }

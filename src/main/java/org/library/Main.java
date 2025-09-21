@@ -2,35 +2,55 @@ package org.library;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.library.entity.Book;
 import org.library.entity.Student;
 import org.library.repository.BookRepository;
+import org.library.repository.BorrowRecordRepository;
 import org.library.repository.StudentRepository;
+import org.library.service.LibraryService;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
 public class Main {
-
     private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
 
-        // Initialize repositories
-        BookRepository bookRepo = new BookRepository();
+        // Instantiate repositories
         StudentRepository studentRepo = new StudentRepository();
+        BookRepository bookRepo = new BookRepository();
+        BorrowRecordRepository borrowRepo = new BorrowRecordRepository();
 
-        // Create and save a book
-        Book book = new Book("The Hobbit", "J.R.R. Tolkien");
-        bookRepo.save(book);
+        // Service
+        LibraryService libraryService = new LibraryService(studentRepo, bookRepo, borrowRepo);
 
-        // Create and save a student
-        Student student = new Student("Alice", "Johnson");
+        // Create student
+        Student student = new Student();
+        student.setFirstName("Michael");
+        student.setLastName("Olatunji");
         studentRepo.save(student);
+        logger.info("Created student: {} {}", student.getFirstName(), student.getLastName());
 
-        // Fetch and log results
-        logger.info("All books: {}", bookRepo.findAll());
-        logger.info("All students: {}", studentRepo.findAll());
+        // Create book
+        Book book = new Book();
+        book.setTitle("Hibernate Basics");
+        book.setAuthor("Tutorials Point");
+        bookRepo.save(book);
+        logger.info("Created book: {}", book.getTitle());
+
+        // Borrow book
+        libraryService.borrowBook(student.getId(), book.getId());
+
+        // Try borrowing again (should fail)
+        libraryService.borrowBook(student.getId(), book.getId());
+
+        // Return book
+        libraryService.returnBook(student.getId());
+
+        // Borrow again (should succeed now)
+        libraryService.borrowBook(student.getId(), book.getId());
+
 
     }
 }

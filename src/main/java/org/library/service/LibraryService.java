@@ -26,27 +26,24 @@ public class LibraryService {
         this.borrowRepo = borrowRepo;
     }
 
-    // ------------------------------
+
     // Create student
-    // ------------------------------
     public void createStudent(String firstName, String lastName) {
         Student student = new Student(firstName, lastName);
         studentRepo.save(student);
         logger.info("Student created: {} {}", firstName, lastName);
     }
 
-    // ------------------------------
+
     // Create book
-    // ------------------------------
     public void createBook(String title, String author) {
         Book book = new Book(title, author);
         bookRepo.save(book);
         logger.info("Book created: {} by {}", title, author);
     }
 
-    // ------------------------------
+
     // Borrow book
-    // ------------------------------
     public String borrowBook(Long studentId, Long bookId) {
         Student student = studentRepo.findById(studentId);
         if (student == null) {
@@ -75,9 +72,8 @@ public class LibraryService {
         return "Book borrowed successfully.";
     }
 
-    // ------------------------------
+
     // Return book
-    // ------------------------------
     public String returnBook(Long studentId) {
         List<BorrowRecord> allRecords = borrowRepo.findAll();
         BorrowRecord record = allRecords.stream()

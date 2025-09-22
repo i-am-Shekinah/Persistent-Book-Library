@@ -89,7 +89,8 @@ public class LibraryService {
         // We'll just remove by re-saving list except this, but since we have repo.save only,
         // we should extend repo to support delete
         try {
-            borrowRepo.delete(record.getId());
+            record.setReturned(true);
+            borrowRepo.save(record);
             logger.info("Student {} {} returned book '{}'",
                     record.getStudent().getFirstName(),
                     record.getStudent().getLastName(),

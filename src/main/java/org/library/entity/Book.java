@@ -23,7 +23,6 @@ public class Book {
     public Book() {}
 
     public Book(String title, String author) {
-        this.id = id;
         this.title = title;
         this.author = author;
     }

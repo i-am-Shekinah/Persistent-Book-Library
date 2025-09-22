@@ -75,6 +75,22 @@
             <version>5.11.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- QueryDSL JPA -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+
+        <!-- QueryDSL Annotation Processor -->
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>5.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -99,6 +115,29 @@
                     <useModulePath>false</useModulePath>
                 </configuration>
             </plugin>
+
+
+            <!-- Annotation processing for QueryDSL -->
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>5.0</version>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <processors>
+                                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                            </processors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>
